@@ -1,0 +1,228 @@
+databaseChangeLog:
+  - logicalFilePath: liquibase/changelog.yml
+  - changeSet:
+      id: 1
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: account_number
+                  type: BIGINT
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: bic
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_type
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: numeric
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: payments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: payer_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: receiver_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: varchar(512)
+              - column:
+                  name: create_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modify_date
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                    name: id
+                    type: BIGINT
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+              - column:
+                  name: role_signature
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: account_types
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+  - changeSet:
+      id: 6
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 7
+      author: Kristina_Menshikova
+      comment: "Create roles"
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                    name: id
+                    value: 1
+              - column:
+                  name: role_signature
+                  value: "ROLE_ADMIN"
+              - column:
+                  name: role_name
+                  value: "Администратор"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                    name: id
+                    value: 2
+              - column:
+                  name: role_signature
+                  value: "ROLE_USER"
+              - column:
+                  name: role_name
+                  value: "Пользователь"
+  - changeSet:
+      id: 8
+      author: Kristina_Menshikova
+      comment: "Create account types"
+      changes:
+        - insert:
+            tableName: account_types
+            columns:
+              - column:
+                    name: id
+                    value: 1
+              - column:
+                  name: type
+                  value: "Рассчетный счет"
+        - insert:
+            tableName: account_types
+            columns:
+              - column:
+                    name: id
+                    value: 2
+              - column:
+                  name: type
+                  value: "Транзитный счет"
+        - insert:
+            tableName: account_types
+            columns:
+              - column:
+                    name: id
+                    value: 3
+              - column:
+                  name: type
+                  value: "Общий счет"
