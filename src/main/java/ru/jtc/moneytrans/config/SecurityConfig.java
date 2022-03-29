@@ -17,7 +17,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/money-trans/registration").permitAll()
-                .antMatchers("/money-trans/login").permitAll()
                 .antMatchers("/money-trans/hello").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
@@ -30,5 +29,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -9,13 +9,18 @@ import javax.persistence.*;
 @Table(name = "accounts")
 public class Account {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
     @Column(name = "account_number")
-    private long accountNumber;
-    private long bic;
+    private String accountNumber;
+    @Column(name = "bic")
+    private Long bic;
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_type", referencedColumnName = "id")
     private AccountType accountType;
-    private double balance;
+    @Column(name = "balance")
+    private Double balance;
 }

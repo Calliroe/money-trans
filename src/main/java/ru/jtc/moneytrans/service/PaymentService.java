@@ -1,16 +1,18 @@
 package ru.jtc.moneytrans.service;
 
-import ru.jtc.moneytrans.rest.dto.TransferMoneyDto;
+import ru.jtc.moneytrans.rest.dto.PaymentDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.Payment;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.repository.PaymentRepository;
+import ru.jtc.moneytrans.rest.exception.PaymentException;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -20,17 +22,23 @@ public class PaymentService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public void transferMoney(TransferMoneyDto dto) throws Exception { //Прописать свои эксепшены
-        if (dto.getPayerAccountNumber() == dto.getReceiverAccountNumber()) {
-            throw new Exception("Номер счёта отправителя совпадает с номером счёта получателя");
+    public void transferMoney(PaymentDto dto) throws PaymentException {
+        if (dto.getPayerAccountNumber().equals(dto.getReceiverAccountNumber())) {
+            throw new PaymentException("Номер счёта отправителя совпадает с номером счёта получателя");
         }
         Account payerAccount = accountRepository.findByAccountNumber(dto.getPayerAccountNumber());
+        if (Objects.isNull(payerAccount)) {
+            throw new PaymentException("Аккаунта отправителя с данным номером не существует");
+        }
         double payerBalance = payerAccount.getBalance();
         double amount = dto.getAmount();
         if (payerBalance < amount) {
-            throw new Exception("Недостаточно средств на счёте");
+            throw new PaymentException("Недостаточно средств на счёте");
         }
         Account receiverAccount = accountRepository.findByAccountNumber(dto.getReceiverAccountNumber());
+        if (Objects.isNull(receiverAccount)) {
+            throw new PaymentException("Аккаунта получателя с данным номером не существует");
+        }
         double receiverBalance = receiverAccount.getBalance();
         payerAccount.setBalance(payerBalance - amount);
         receiverAccount.setBalance(receiverBalance + amount);

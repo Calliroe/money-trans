@@ -13,15 +13,18 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String password;
+    private Long id;
+    @Column(name = "username")
     private String username;
-    @ManyToMany (fetch = FetchType.EAGER)
+    @Column(name = "password")
+    private String password;
+    @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Account.class, mappedBy = "userId")
     private Set<Account> accounts;
 
     @Override

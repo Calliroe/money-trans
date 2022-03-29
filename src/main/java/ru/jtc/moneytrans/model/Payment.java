@@ -11,14 +11,17 @@ import java.util.Date;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @ManyToOne
-    @JoinColumn(name = "payer_account_id",referencedColumnName = "id")
+    @Column(name = "id")
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payer_account_id", referencedColumnName = "id")
     private Account payerAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_account_id", referencedColumnName = "id")
     private Account receiverAccount;
-    private double amount;
+    @Column(name = "amount")
+    private Double amount;
+    @Column(name = "comment")
     private String comment;
     @Column(name = "create_date")
     private Date createDate;

@@ -40,8 +40,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: account_number
+                  name: user_id
                   type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_number
+                  type: varchar(50)
                   constraints:
                     unique: true
                     nullable: false
@@ -110,11 +115,12 @@ databaseChangeLog:
             tableName: roles
             columns:
               - column:
-                    name: id
-                    type: BIGINT
-                    constraints:
-                      primaryKey: true
-                      nullable: false
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: role_signature
                   type: varchar(50)
@@ -157,7 +163,6 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     nullable: false
               - column:
@@ -174,9 +179,6 @@ databaseChangeLog:
             tableName: roles
             columns:
               - column:
-                    name: id
-                    value: 1
-              - column:
                   name: role_signature
                   value: "ROLE_ADMIN"
               - column:
@@ -185,9 +187,6 @@ databaseChangeLog:
         - insert:
             tableName: roles
             columns:
-              - column:
-                    name: id
-                    value: 2
               - column:
                   name: role_signature
                   value: "ROLE_USER"
@@ -203,26 +202,17 @@ databaseChangeLog:
             tableName: account_types
             columns:
               - column:
-                    name: id
-                    value: 1
-              - column:
                   name: type
                   value: "Рассчетный счет"
         - insert:
             tableName: account_types
             columns:
               - column:
-                    name: id
-                    value: 2
-              - column:
                   name: type
                   value: "Транзитный счет"
         - insert:
             tableName: account_types
             columns:
-              - column:
-                    name: id
-                    value: 3
               - column:
                   name: type
                   value: "Общий счет"
