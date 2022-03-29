@@ -15,4 +15,4 @@ jpa:
     use_jdbc_metadata_defaults: false
 logging:
   level:
-    root: DEBUG
+    root: ERROR

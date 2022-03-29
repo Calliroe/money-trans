@@ -7,10 +7,10 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class RegistrationDto {
-    @Size(min = 2, max = 50)
-    @NotBlank
-    private String username;
-    @Size(min = 6, max = 12)
-    @NotBlank
-    private String password;
+    @Size(min = 2, max = 50, message = "Имя пользователя должно содержать от 2 до 50 символов")
+    @NotBlank(message = "Введите имя пользователя")
+    private final String username;
+    @Size(min = 4, max = 12, message = "Пароль должен содержать от 4 до 12 символов")
+    @NotBlank(message = "Введите пароль")
+    private final String password;
 }
