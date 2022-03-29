@@ -20,11 +20,11 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @OneToMany(targetEntity = Account.class, mappedBy = "userId")
+    @OneToMany(targetEntity = Account.class, mappedBy = "userId", cascade = CascadeType.ALL)
     private Set<Account> accounts;
 
     @Override

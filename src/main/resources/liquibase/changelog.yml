@@ -216,3 +216,31 @@ databaseChangeLog:
               - column:
                   name: type
                   value: "Общий счет"
+  - changeSet:
+      id: 9
+      author: Kristina_Menshikova
+      comment: "Create admin"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "$2a$12$epKCbl.xjELYCzXbqhQvd.RfWt00m7RyDhxCX2c1cGHRsTs8Zl29q"
+  - changeSet:
+      id: 10
+      author: Kristina_Menshikova
+      comment: "Save user_role for admin"
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 1
