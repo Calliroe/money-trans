@@ -49,4 +49,5 @@ public class UserService implements UserDetailsService {
         Hibernate.initialize(user.getAccounts());
         return user;
     }
+
 }

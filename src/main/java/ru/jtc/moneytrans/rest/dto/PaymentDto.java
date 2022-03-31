@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class PaymentDto {
+
     @Size(min = 6, max = 6, message = "Номер счёта должен содержать 6 символов")
     @NotBlank(message = "Введите счёт отправителя")
     private String payerAccountNumber;
@@ -18,4 +19,5 @@ public class PaymentDto {
     @Min(value = 1, message = "Минимальная сумма перевода - 1 рубль")
     @NotNull(message = "Введите сумму перевода")
     private Double amount;
+
 }

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.jtc.moneytrans.model.Role;
 import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.rest.validation.PaymentValidator;
 import ru.jtc.moneytrans.service.AccountService;
@@ -18,6 +19,7 @@ import ru.jtc.moneytrans.service.PaymentService;
 import ru.jtc.moneytrans.service.UserService;
 
 import java.util.Objects;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,6 +45,11 @@ public class ApplicationControllerTest {
         User user = new User();
         user.setUsername("username");
         user.setPassword("password");
+        Role role = new Role();
+        role.setRoleSignature("USER_ROLE");
+        role.setRoleName("Пользователь");
+        user.setRoles(Set.of(role));
+        user.setAccounts(null);
         Mockito.when(userService.findByUsername("username")).thenReturn(user);
         Mockito.when(userService.loadUserByUsername("username")).thenReturn(user);
     }

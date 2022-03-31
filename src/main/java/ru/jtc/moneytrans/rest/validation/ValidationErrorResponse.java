@@ -7,5 +7,7 @@ import java.util.List;
 
 @Data
 public class ValidationErrorResponse {
+
     private List<Violation> violations = new ArrayList<>();
+
 }

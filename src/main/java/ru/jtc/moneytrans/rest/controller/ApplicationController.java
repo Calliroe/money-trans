@@ -19,9 +19,8 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-
-@RequestMapping("/money-trans")
 @AllArgsConstructor
+@RequestMapping("/money-trans")
 public class ApplicationController {
 
     private final UserService userService;
@@ -58,7 +57,7 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public List<Payment> getPayments(@RequestBody(required = false) FilteringDto filteringDto, @AuthenticationPrincipal User user) { // Сделать фильтрацию
+    public List<Payment> getPayments(@RequestBody(required = false) FilteringDto filteringDto, @AuthenticationPrincipal User user) {
         for (Role role : user.getRoles()) {
             if (role.getRoleSignature().equals("ROLE_ADMIN")) {
                 return paymentService.getAll(filteringDto);
@@ -71,4 +70,5 @@ public class ApplicationController {
         }
         return payments;
     }
+
 }

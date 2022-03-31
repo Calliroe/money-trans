@@ -14,6 +14,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 public class AccountService {
+
     private final AccountRepository accountRepository;
     private final AccountTypeRepository accountTypeRepository;
 
@@ -39,4 +40,5 @@ public class AccountService {
         account.setBic(accountInfo.getBic());
         saveAccount(account);
     }
+
 }

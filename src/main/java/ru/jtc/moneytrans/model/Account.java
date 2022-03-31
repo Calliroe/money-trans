@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "accounts")
 public class Account {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +24,5 @@ public class Account {
     private AccountType accountType;
     @Column(name = "balance")
     private Double balance;
+
 }

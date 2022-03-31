@@ -36,4 +36,5 @@ public class PaymentValidator {
             throw new PaymentException("Аккаунта получателя с данным номером не существует");
         }
     }
+
 }

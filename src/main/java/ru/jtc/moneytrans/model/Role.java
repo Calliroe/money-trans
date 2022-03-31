@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +23,5 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return getRoleSignature();
     }
+
 }

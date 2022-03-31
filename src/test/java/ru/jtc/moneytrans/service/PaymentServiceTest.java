@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(initializers = {PaymentServiceTest.Initializer.class})
 @Transactional
 public class PaymentServiceTest {
+
     private static PostgreSQLContainer sqlContainer;
 
     static {
@@ -49,10 +50,8 @@ public class PaymentServiceTest {
 
     @Autowired
     PaymentService paymentService;
-
     @Autowired
     PaymentRepository paymentRepository;
-
     @Autowired
     AccountRepository accountRepository;
 
@@ -133,6 +132,7 @@ public class PaymentServiceTest {
         Payment payment2 = createPayment(payerAccount2, receiverAccount2);
         FilteringDto dto = new FilteringDto();
         dto.setPayerAccountId(payerAccount1.getId());
+
         List<Payment> payments = paymentService.getAll(dto);
 
         assertThat(payments.size()).isEqualTo(1);
@@ -195,4 +195,5 @@ public class PaymentServiceTest {
         account.setId(accountRepository.findByAccountNumber(accountNumber).getId());
         return account;
     }
+
 }

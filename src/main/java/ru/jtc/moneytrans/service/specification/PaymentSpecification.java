@@ -1,4 +1,4 @@
-package ru.jtc.moneytrans.service.speciication;
+package ru.jtc.moneytrans.service.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 import ru.jtc.moneytrans.model.Payment;
@@ -41,4 +41,5 @@ public class PaymentSpecification {
     public static Specification<Payment> createDate(Date date) {
         return (r, cq, cb) -> cb.equal(r.get(Payment.Fields.createDate), date);
     }
+
 }

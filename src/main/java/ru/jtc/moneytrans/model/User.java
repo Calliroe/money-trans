@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,4 +57,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

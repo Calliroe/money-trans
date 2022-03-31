@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(initializers = {UserServiceTest.Initializer.class})
 @Transactional
 public class UserServiceTest {
+
     private static PostgreSQLContainer sqlContainer;
 
     static {
@@ -48,7 +49,6 @@ public class UserServiceTest {
 
     @Autowired
     UserService userService;
-
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -99,4 +99,5 @@ public class UserServiceTest {
         role.setRoleName("Пользователь");
         return role;
     }
+
 }

@@ -8,7 +8,7 @@ import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.Payment;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.repository.PaymentRepository;
-import ru.jtc.moneytrans.service.speciication.PaymentSpecification;
+import ru.jtc.moneytrans.service.specification.PaymentSpecification;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -62,4 +62,5 @@ public class PaymentService {
         payment.setModifyDate(date);
         paymentRepository.save(payment);
     }
+
 }

@@ -1,5 +1,6 @@
 package ru.jtc.moneytrans.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.rest.dto.AccountInfo;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {AccountServiceTest.Initializer.class})
-@Transactional
 public class AccountServiceTest {
 
     private static PostgreSQLContainer sqlContainer;
@@ -50,9 +49,13 @@ public class AccountServiceTest {
 
     @Autowired
     AccountService accountService;
-
     @Autowired
     AccountRepository accountRepository;
+
+    @Before
+    public void before() {
+        accountRepository.deleteAll();
+    }
 
     @Test
     public void save_validData_shouldSaveAccount() {
@@ -115,4 +118,5 @@ public class AccountServiceTest {
         account.setAccountNumber(accountNumber);
         return account;
     }
+
 }

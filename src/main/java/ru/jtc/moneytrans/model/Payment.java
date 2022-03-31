@@ -11,6 +11,7 @@ import java.util.Date;
 @Table(name = "payments")
 @FieldNameConstants
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,4 +30,5 @@ public class Payment {
     private Date createDate;
     @Column(name = "modify_date")
     private Date modifyDate;
+
 }
