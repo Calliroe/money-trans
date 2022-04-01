@@ -30,7 +30,6 @@ public class PaymentService {
         payerAccount.setBalance(payerBalance - amount);
         receiverAccount.setBalance(receiverBalance + amount);
         accountRepository.saveAll(List.of(payerAccount, receiverAccount));
-        accountRepository.save(receiverAccount);
         createPayment(payerAccount, receiverAccount, amount);
     }
 

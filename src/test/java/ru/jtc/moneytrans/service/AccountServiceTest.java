@@ -94,16 +94,17 @@ public class AccountServiceTest {
 
     @Test
     public void createAccount_validData_shouldCreateAccount() {
-        AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setAccountNumber("number");
-        accountInfo.setBic(123L);
-        accountInfo.setBalance(100.0);
+        AccountInfo accountInfo = createAccountInfo();
         User user = new User();
         user.setId(1L);
 
         accountService.createAccount(accountInfo, user);
 
+        Account result = accountRepository.findByAccountNumber(accountInfo.getAccountNumber());
+        Account expect = createAccount(user.getId(), accountInfo.getAccountNumber());
+        expect.setId(result.getId());
         assertThat(accountRepository.findAll().size()).isEqualTo(1);
+        assertThat(result).isEqualTo(expect);
     }
 
     public Account createAccount(Long userId, String accountNumber) {
@@ -117,6 +118,14 @@ public class AccountServiceTest {
         account.setUserId(userId);
         account.setAccountNumber(accountNumber);
         return account;
+    }
+
+    public AccountInfo createAccountInfo() {
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setAccountNumber("number");
+        accountInfo.setBic(123L);
+        accountInfo.setBalance(1000.0);
+        return accountInfo;
     }
 
 }
