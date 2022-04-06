@@ -31,7 +31,7 @@ public class ApplicationController {
     private final String FAILURE_STATUS = "FAILURE";
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<BaseResponse> createUser(@Valid @RequestBody RegistrationDto registrationDto) {
+    public ResponseEntity<BaseResponse> createUser(@Valid @RequestBody RegistrationDto registrationDto) { // Поменять
         if (Objects.nonNull(userService.findByUsername(registrationDto.getUsername()))) {
             return ResponseEntity.ok(new BaseResponse(FAILURE_STATUS, "Пользователь с таким именем уже существует"));
         }
@@ -58,7 +58,7 @@ public class ApplicationController {
 
     @GetMapping
     public List<Payment> getPayments(@RequestBody(required = false) FilteringDto filteringDto, @AuthenticationPrincipal User user) {
-        for (Role role : user.getRoles()) {
+        for (Role role : user.getRoles()) { // Разделить на два эндпоинта
             if (role.getRoleSignature().equals("ROLE_ADMIN")) {
                 return paymentService.getAll(filteringDto);
             }

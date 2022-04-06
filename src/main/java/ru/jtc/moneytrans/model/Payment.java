@@ -4,16 +4,17 @@ import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "payments")
+@Table(name = "payment")
 @FieldNameConstants
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить стратегию
     @Column(name = "id")
     private Long id;
     @ManyToOne
@@ -23,7 +24,7 @@ public class Payment {
     @JoinColumn(name = "receiver_account_id", referencedColumnName = "id")
     private Account receiverAccount;
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
     @Column(name = "comment")
     private String comment;
     @Column(name = "create_date")

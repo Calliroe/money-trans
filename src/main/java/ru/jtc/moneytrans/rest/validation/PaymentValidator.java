@@ -7,6 +7,7 @@ import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.rest.dto.PaymentDto;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Data
@@ -26,9 +27,9 @@ public class PaymentValidator {
         if (dto.getPayerAccountNumber().equals(dto.getReceiverAccountNumber())) {
             throw new PaymentException("Номер счёта отправителя не может совпадать с номером счёта получателя");
         }
-        double payerBalance = payerAccount.getBalance();
-        double amount = dto.getAmount();
-        if (payerBalance < amount) {
+        BigDecimal payerBalance = payerAccount.getBalance();
+        BigDecimal amount = dto.getAmount();
+        if (payerBalance.compareTo(amount) < 0) {
             throw new PaymentException("Недостаточно средств на счёте");
         }
         Account receiverAccount = accountRepository.findByAccountNumber(dto.getReceiverAccountNumber());

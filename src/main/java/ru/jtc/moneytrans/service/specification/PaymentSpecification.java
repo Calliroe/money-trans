@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PaymentSpecification {
 
     public static Specification<Payment> makeSpecification(FilteringDto dto) {
-        Specification<Payment> specification = (root, query, criteriaBuilder) -> null;
+        Specification<Payment> specification = (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         if (Objects.nonNull(dto.getPayerAccountId())) {
             specification = specification.and(outgoingPayments(dto.getPayerAccountId()));
         }

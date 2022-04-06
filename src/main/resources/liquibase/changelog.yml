@@ -5,7 +5,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: id
@@ -22,7 +22,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: password
-                  type: varchar(100)
+                  type: varchar(70)
                   constraints:
                     nullable: false
   - changeSet:
@@ -30,7 +30,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: accounts
+            tableName: account
             columns:
               - column:
                   name: id
@@ -48,7 +48,6 @@ databaseChangeLog:
                   name: account_number
                   type: varchar(50)
                   constraints:
-                    unique: true
                     nullable: false
               - column:
                   name: bic
@@ -70,7 +69,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: payments
+            tableName: payment
             columns:
               - column:
                   name: id
@@ -112,7 +111,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: roles
+            tableName: role
             columns:
               - column:
                   name: id
@@ -138,7 +137,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: account_types
+            tableName: account_type
             columns:
               - column:
                   name: id
@@ -158,7 +157,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: user_roles
+            tableName: user_role
             columns:
               - column:
                   name: user_id
@@ -176,7 +175,7 @@ databaseChangeLog:
       comment: "Create roles"
       changes:
         - insert:
-            tableName: roles
+            tableName: role
             columns:
               - column:
                   name: role_signature
@@ -185,7 +184,7 @@ databaseChangeLog:
                   name: role_name
                   value: "Администратор"
         - insert:
-            tableName: roles
+            tableName: role
             columns:
               - column:
                   name: role_signature
@@ -199,19 +198,19 @@ databaseChangeLog:
       comment: "Create account types"
       changes:
         - insert:
-            tableName: account_types
+            tableName: account_type
             columns:
               - column:
                   name: type
                   value: "Рассчетный счет"
         - insert:
-            tableName: account_types
+            tableName: account_type
             columns:
               - column:
                   name: type
                   value: "Транзитный счет"
         - insert:
-            tableName: account_types
+            tableName: account_type
             columns:
               - column:
                   name: type
@@ -222,7 +221,7 @@ databaseChangeLog:
       comment: "Create admin"
       changes:
         - insert:
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: username
@@ -236,7 +235,7 @@ databaseChangeLog:
       comment: "Save user_role for admin"
       changes:
         - insert:
-            tableName: user_roles
+            tableName: user_role
             columns:
               - column:
                   name: user_id

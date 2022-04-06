@@ -6,12 +6,12 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "account_types")
+@Table(name = "account_type")
 public class AccountType {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить стратегию
     private Long id;
     @Column(name = "type")
     private String type;

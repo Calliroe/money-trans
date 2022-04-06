@@ -45,8 +45,8 @@ public class UserService implements UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("User not found");
         }
-        Hibernate.initialize(user.getRoles());
-        Hibernate.initialize(user.getAccounts());
+        Hibernate.initialize(user.getRoles()); // Убрать
+        Hibernate.initialize(user.getAccounts()); // Убрать
         return user;
     }
 

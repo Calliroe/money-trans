@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BaseResponse {
 
-    private final String STATUS;
-    private final String MESSAGE;
+    private final String status;
+    private final String message;
 
 }

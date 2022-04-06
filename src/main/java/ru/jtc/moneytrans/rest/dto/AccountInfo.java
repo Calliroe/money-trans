@@ -1,10 +1,12 @@
 package ru.jtc.moneytrans.rest.dto;
 
 import lombok.Data;
+import ru.jtc.moneytrans.model.AccountType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 public class AccountInfo {
@@ -14,6 +16,9 @@ public class AccountInfo {
     private String accountNumber;
     @NotNull(message = "Введите БИК")
     private Long bic;
-    private Double balance;
+    @NotNull(message = "Укажите тип аккаунта")
+    private AccountType accountType;
+    @NotNull(message = "Введите значение баланса")
+    private BigDecimal balance;
 
 }

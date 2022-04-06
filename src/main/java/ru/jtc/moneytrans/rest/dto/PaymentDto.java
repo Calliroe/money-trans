@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 public class PaymentDto {
@@ -18,6 +19,6 @@ public class PaymentDto {
     private String receiverAccountNumber;
     @Min(value = 1, message = "Минимальная сумма перевода - 1 рубль")
     @NotNull(message = "Введите сумму перевода")
-    private Double amount;
+    private BigDecimal amount;
 
 }

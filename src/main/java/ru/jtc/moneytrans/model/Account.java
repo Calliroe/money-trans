@@ -3,15 +3,16 @@ package ru.jtc.moneytrans.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "accounts")
+@Table(name = "account")
 public class Account {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить стратегию
     private Long id;
     @Column(name = "user_id")
     private Long userId;
@@ -23,6 +24,6 @@ public class Account {
     @JoinColumn(name = "account_type", referencedColumnName = "id")
     private AccountType accountType;
     @Column(name = "balance")
-    private Double balance;
+    private BigDecimal balance;
 
 }

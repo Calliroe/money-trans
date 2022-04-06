@@ -11,6 +11,7 @@ import ru.jtc.moneytrans.repository.PaymentRepository;
 import ru.jtc.moneytrans.service.specification.PaymentSpecification;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -24,11 +25,11 @@ public class PaymentService {
     public void transferMoney(PaymentDto dto) {
         Account payerAccount = accountRepository.findByAccountNumber(dto.getPayerAccountNumber());
         Account receiverAccount = accountRepository.findByAccountNumber(dto.getReceiverAccountNumber());
-        double payerBalance = payerAccount.getBalance();
-        double receiverBalance = receiverAccount.getBalance();
-        double amount = dto.getAmount();
-        payerAccount.setBalance(payerBalance - amount);
-        receiverAccount.setBalance(receiverBalance + amount);
+        BigDecimal payerBalance = payerAccount.getBalance();
+        BigDecimal receiverBalance = receiverAccount.getBalance();
+        BigDecimal amount = dto.getAmount();
+        payerAccount.setBalance(payerBalance.subtract(amount));
+        receiverAccount.setBalance(receiverBalance.add(amount));
         accountRepository.saveAll(List.of(payerAccount, receiverAccount));
         createPayment(payerAccount, receiverAccount, amount);
     }
@@ -51,7 +52,7 @@ public class PaymentService {
         }
     }
 
-    private void createPayment(Account payerAccount, Account receiverAccount, Double amount) {
+    private void createPayment(Account payerAccount, Account receiverAccount, BigDecimal amount) {
         Payment payment = new Payment();
         payment.setPayerAccount(payerAccount);
         payment.setReceiverAccount(receiverAccount);
