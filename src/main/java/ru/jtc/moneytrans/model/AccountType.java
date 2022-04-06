@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "account_type")
+@Table(name = "mt_account_type")
 public class AccountType {
 
     @Id

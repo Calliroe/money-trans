@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "mt_user")
 public class User implements UserDetails {
 
     @Id
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "mt_user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(targetEntity = Account.class, mappedBy = "userId", cascade = CascadeType.ALL)

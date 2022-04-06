@@ -18,6 +18,7 @@ import ru.jtc.moneytrans.repository.PaymentRepository;
 import ru.jtc.moneytrans.rest.dto.FilteringDto;
 import ru.jtc.moneytrans.rest.dto.PaymentDto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -140,12 +141,12 @@ public class PaymentServiceTest {
         PaymentDto dto = new PaymentDto();
         dto.setPayerAccountNumber("accountNumber5");
         dto.setReceiverAccountNumber("accountNumber6");
-        dto.setAmount(150.0);
+        dto.setAmount(new BigDecimal("150.0"));
 
         paymentService.transferMoney(dto);
 
-        assertThat(accountRepository.findByAccountNumber("accountNumber5").getBalance()).isEqualTo(850.0);
-        assertThat(accountRepository.findByAccountNumber("accountNumber6").getBalance()).isEqualTo(1150.0);
+        assertThat(accountRepository.findByAccountNumber("accountNumber5").getBalance()).isEqualTo(new BigDecimal("850.0"));
+        assertThat(accountRepository.findByAccountNumber("accountNumber6").getBalance()).isEqualTo(new BigDecimal("1150.0"));
         assertThat(paymentService.getAll(null).size()).isEqualTo(5);
     }
 
@@ -155,7 +156,7 @@ public class PaymentServiceTest {
         payment.setModifyDate(new Date(1L));
         payment.setPayerAccount(payerAccount);
         payment.setReceiverAccount(receiverAccount);
-        payment.setAmount(500.0);
+        payment.setAmount(new BigDecimal("500.0"));
         paymentRepository.save(payment);
         return payment;
     }
@@ -167,7 +168,7 @@ public class PaymentServiceTest {
         Account account = new Account();
         account.setAccountType(accountType);
         account.setBic(123L);
-        account.setBalance(1000.0);
+        account.setBalance(new BigDecimal("1000.0"));
         account.setUserId(6L);
         account.setAccountNumber(accountNumber);
         accountRepository.save(account);

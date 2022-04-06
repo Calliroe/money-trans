@@ -17,6 +17,7 @@ import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.rest.dto.AccountInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -114,7 +115,7 @@ public class AccountServiceTest {
         Account account = new Account();
         account.setAccountType(accountType);
         account.setBic(123L);
-        account.setBalance(1000.0);
+        account.setBalance(new BigDecimal("1000.0"));
         account.setUserId(userId);
         account.setAccountNumber(accountNumber);
         return account;
@@ -124,7 +125,7 @@ public class AccountServiceTest {
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setAccountNumber("number");
         accountInfo.setBic(123L);
-        accountInfo.setBalance(1000.0);
+        accountInfo.setBalance(new BigDecimal("1000.0"));
         return accountInfo;
     }
 

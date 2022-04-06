@@ -5,7 +5,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: user
+            tableName: mt_user
             columns:
               - column:
                   name: id
@@ -30,7 +30,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: account
+            tableName: mt_account
             columns:
               - column:
                   name: id
@@ -69,7 +69,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: payment
+            tableName: mt_payment
             columns:
               - column:
                   name: id
@@ -111,7 +111,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: role
+            tableName: mt_role
             columns:
               - column:
                   name: id
@@ -137,7 +137,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: account_type
+            tableName: mt_account_type
             columns:
               - column:
                   name: id
@@ -157,7 +157,7 @@ databaseChangeLog:
       author: Kristina_Menshikova
       changes:
         - createTable:
-            tableName: user_role
+            tableName: mt_user_role
             columns:
               - column:
                   name: user_id
@@ -175,7 +175,7 @@ databaseChangeLog:
       comment: "Create roles"
       changes:
         - insert:
-            tableName: role
+            tableName: mt_role
             columns:
               - column:
                   name: role_signature
@@ -184,7 +184,7 @@ databaseChangeLog:
                   name: role_name
                   value: "Администратор"
         - insert:
-            tableName: role
+            tableName: mt_role
             columns:
               - column:
                   name: role_signature
@@ -198,19 +198,19 @@ databaseChangeLog:
       comment: "Create account types"
       changes:
         - insert:
-            tableName: account_type
+            tableName: mt_account_type
             columns:
               - column:
                   name: type
                   value: "Рассчетный счет"
         - insert:
-            tableName: account_type
+            tableName: mt_account_type
             columns:
               - column:
                   name: type
                   value: "Транзитный счет"
         - insert:
-            tableName: account_type
+            tableName: mt_account_type
             columns:
               - column:
                   name: type
@@ -221,7 +221,7 @@ databaseChangeLog:
       comment: "Create admin"
       changes:
         - insert:
-            tableName: user
+            tableName: mt_user
             columns:
               - column:
                   name: username
@@ -235,7 +235,7 @@ databaseChangeLog:
       comment: "Save user_role for admin"
       changes:
         - insert:
-            tableName: user_role
+            tableName: mt_user_role
             columns:
               - column:
                   name: user_id

@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "payment")
+@Table(name = "mt_payment")
 @FieldNameConstants
 public class Payment {
 
