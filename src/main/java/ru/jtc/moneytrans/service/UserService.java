@@ -1,7 +1,6 @@
 package ru.jtc.moneytrans.service;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,12 +40,10 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameFetchRoles(username);
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("User not found");
         }
-        Hibernate.initialize(user.getRoles()); // Убрать
-        Hibernate.initialize(user.getAccounts()); // Убрать
         return user;
     }
 

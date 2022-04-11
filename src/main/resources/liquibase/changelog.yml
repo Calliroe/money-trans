@@ -8,9 +8,11 @@ databaseChangeLog:
             tableName: mt_user
             columns:
               - column:
+                  name: version
+                  type: BIGINT
+              - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -33,9 +35,11 @@ databaseChangeLog:
             tableName: mt_account
             columns:
               - column:
+                  name: version
+                  type: BIGINT
+              - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -72,9 +76,11 @@ databaseChangeLog:
             tableName: mt_payment
             columns:
               - column:
+                  name: version
+                  type: BIGINT
+              - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -114,9 +120,11 @@ databaseChangeLog:
             tableName: mt_role
             columns:
               - column:
+                  name: version
+                  type: BIGINT
+              - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -140,9 +148,11 @@ databaseChangeLog:
             tableName: mt_account_type
             columns:
               - column:
+                  name: version
+                  type: BIGINT
+              - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -159,6 +169,9 @@ databaseChangeLog:
         - createTable:
             tableName: mt_user_role
             columns:
+              - column:
+                  name: version
+                  type: BIGINT
               - column:
                   name: user_id
                   type: BIGINT
@@ -178,6 +191,12 @@ databaseChangeLog:
             tableName: mt_role
             columns:
               - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
+              - column:
                   name: role_signature
                   value: "ROLE_ADMIN"
               - column:
@@ -186,6 +205,12 @@ databaseChangeLog:
         - insert:
             tableName: mt_role
             columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 2
               - column:
                   name: role_signature
                   value: "ROLE_USER"
@@ -201,17 +226,35 @@ databaseChangeLog:
             tableName: mt_account_type
             columns:
               - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
+              - column:
                   name: type
                   value: "Рассчетный счет"
         - insert:
             tableName: mt_account_type
             columns:
               - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 2
+              - column:
                   name: type
                   value: "Транзитный счет"
         - insert:
             tableName: mt_account_type
             columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 3
               - column:
                   name: type
                   value: "Общий счет"
@@ -223,6 +266,12 @@ databaseChangeLog:
         - insert:
             tableName: mt_user
             columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
               - column:
                   name: username
                   value: "admin"
@@ -238,8 +287,47 @@ databaseChangeLog:
             tableName: mt_user_role
             columns:
               - column:
+                  name: version
+                  value: 0
+              - column:
                   name: user_id
                   value: 1
               - column:
                   name: role_id
                   value: 1
+  - changeSet:
+      id: 11
+      author: Kristina_Menshikova
+      comment: "Create user_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 2
+            sequenceName: user_sequence
+            startValue: 2
+  - changeSet:
+      id: 12
+      author: Kristina_Menshikova
+      comment: "Create account_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 1
+            sequenceName: account_sequence
+            startValue: 1
+  - changeSet:
+      id: 13
+      author: Kristina_Menshikova
+      comment: "Create payment_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 1
+            sequenceName: payment_sequence
+            startValue: 1

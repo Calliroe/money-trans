@@ -5,16 +5,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.PostgreSQLContainer;
 import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.AccountType;
 import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.AccountRepository;
+import ru.jtc.moneytrans.repository.AccountTypeRepository;
 import ru.jtc.moneytrans.rest.dto.AccountInfo;
 
 import java.math.BigDecimal;
@@ -26,32 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {AccountServiceTest.Initializer.class})
-public class AccountServiceTest {
-
-    private static PostgreSQLContainer sqlContainer;
-
-    static {
-        sqlContainer = new PostgreSQLContainer("postgres:10.7")
-                .withDatabaseName("integration-tests-db")
-                .withUsername("username")
-                .withPassword("password");
-        sqlContainer.start();
-    }
-
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + sqlContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + sqlContainer.getUsername(),
-                    "spring.datasource.password=" + sqlContainer.getPassword()
-            ).applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
+public class AccountServiceTest extends AbstractServiceTest {
 
     @Autowired
     AccountService accountService;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    AccountTypeRepository accountTypeRepository;
 
     @Before
     public void before() {
@@ -60,7 +39,7 @@ public class AccountServiceTest {
 
     @Test
     public void save_validData_shouldSaveAccount() {
-        Account account = createAccount(1L, "accountNumber");
+        Account account = createAccount(1L, "num1");
 
         accountService.saveAccount(account);
 
@@ -101,17 +80,16 @@ public class AccountServiceTest {
 
         accountService.createAccount(accountInfo, user);
 
-        Account result = accountRepository.findByAccountNumber(accountInfo.getAccountNumber());
+        Account result = accountRepository.findByAccountNumberAndBic(accountInfo.getAccountNumber(), accountInfo.getBic());
         Account expect = createAccount(user.getId(), accountInfo.getAccountNumber());
+        expect.setVersion(0L);
         expect.setId(result.getId());
         assertThat(accountRepository.findAll().size()).isEqualTo(1);
         assertThat(result).isEqualTo(expect);
     }
 
     public Account createAccount(Long userId, String accountNumber) {
-        AccountType accountType = new AccountType();
-        accountType.setId(1L);
-        accountType.setType("Рассчетный счет");
+        AccountType accountType = accountTypeRepository.findByType("Рассчетный счет");
         Account account = new Account();
         account.setAccountType(accountType);
         account.setBic(123L);
@@ -126,6 +104,7 @@ public class AccountServiceTest {
         accountInfo.setAccountNumber("number");
         accountInfo.setBic(123L);
         accountInfo.setBalance(new BigDecimal("1000.0"));
+        accountInfo.setAccountType("Рассчетный счет");
         return accountInfo;
     }
 

@@ -13,9 +13,13 @@ import java.util.Date;
 @FieldNameConstants
 public class Payment {
 
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить стратегию
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_seq")
+    @SequenceGenerator(name = "payment_seq", sequenceName = "payment_sequence", allocationSize = 1)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "payer_account_id", referencedColumnName = "id")

@@ -13,17 +13,20 @@ import java.util.Set;
 @Table(name = "mt_user")
 public class User implements UserDetails {
 
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "mt_user_role", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "mt_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(targetEntity = Account.class, mappedBy = "userId", cascade = CascadeType.ALL)
     private Set<Account> accounts;

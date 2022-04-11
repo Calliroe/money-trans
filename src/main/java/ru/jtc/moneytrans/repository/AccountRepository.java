@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    Account findByAccountNumber(String accountNumber);
+    Account findByAccountNumberAndBic(String accountNumber, Long bic);
 
     Set<Account> findAllByUserId(Long userId);
 

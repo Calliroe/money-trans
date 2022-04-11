@@ -11,6 +11,9 @@ public class PaymentSpecification {
 
     public static Specification<Payment> makeSpecification(FilteringDto dto) {
         Specification<Payment> specification = (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        if (Objects.isNull(dto)) {
+            return specification;
+        }
         if (Objects.nonNull(dto.getPayerAccountId())) {
             specification = specification.and(outgoingPayments(dto.getPayerAccountId()));
         }

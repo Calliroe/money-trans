@@ -9,9 +9,11 @@ import javax.persistence.*;
 @Table(name = "mt_account_type")
 public class AccountType {
 
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Исправить стратегию
     private Long id;
     @Column(name = "type")
     private String type;

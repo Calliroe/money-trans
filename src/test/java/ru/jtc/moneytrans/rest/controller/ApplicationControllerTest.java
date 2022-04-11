@@ -11,16 +11,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.jtc.moneytrans.model.Account;
-import ru.jtc.moneytrans.model.Payment;
 import ru.jtc.moneytrans.model.Role;
 import ru.jtc.moneytrans.model.User;
-import ru.jtc.moneytrans.rest.validation.PaymentValidator;
-import ru.jtc.moneytrans.service.AccountService;
-import ru.jtc.moneytrans.service.PaymentService;
 import ru.jtc.moneytrans.service.UserService;
 
-import java.security.Principal;
 import java.util.Set;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
@@ -35,28 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ApplicationControllerTest {
 
-
-    /*    @Autowired
-        private WebApplicationContext context;*/
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     UserService userService;
-    @MockBean
-    PaymentService paymentService;
-    @MockBean
-    AccountService accountService;
-    @MockBean
-    PaymentValidator paymentValidator;
-
-/*    @Before
-    public void init() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }*/
 
     @Before
     public void setUp() {
@@ -68,18 +45,13 @@ public class ApplicationControllerTest {
         role.setRoleSignature("USER_ROLE");
         role.setRoleName("Пользователь");
         user.setRoles(Set.of(role));
-        user.setAccounts(null);
         Mockito.when(userService.findByUsername("username")).thenReturn(user);
         Mockito.when(userService.loadUserByUsername("username")).thenReturn(user);
-        Account account = new Account();
-        account.setId(9L);
-        Payment payment = new Payment();
-        payment.setPayerAccount(account);
     }
 
     @Test
     public void createUser_userExist_returnOkWithFailureStatus() throws Exception {
-        mvc.perform(post("/money-trans/registration")
+        mvc.perform(post("/money-trans/user/registration")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Content-Type", "application/json")
                         .content("{\n\"username\":\"username\",\n\"password\":\"123456\"\n}"))
@@ -89,7 +61,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void createUser_userNotExist_returnOkWithSuccessfulStatus() throws Exception {
-        mvc.perform(post("/money-trans/registration")
+        mvc.perform(post("/money-trans/user/registration")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Content-Type", "application/json")
                         .content("{\n\"username\":\"name\",\n\"password\":\"123456\"\n}"))
@@ -99,7 +71,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void createUser_incorrectData_returnError() throws Exception {
-        mvc.perform(post("/money-trans/registration")
+        mvc.perform(post("/money-trans/user/registration")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Content-Type", "application/json")
                         .content("{\n\"username\":\"\",\n\"password\":\"\"\n}"))
@@ -108,7 +80,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void createAccount_userIsNotAuthenticated_returnError() throws Exception {
-        mvc.perform(post("/money-trans/create-account")
+        mvc.perform(post("/money-trans/account/create-account")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Content-Type", "application/json")
                         .content("{\n\"accountNumber\":\"111111\",\n\"bic\":111111,\n\"balance\":1000.0}"))
@@ -117,7 +89,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void transferMoney_userIsNotAuthenticated_returnError() throws Exception {
-        mvc.perform(post("/money-trans/transfer-money")
+        mvc.perform(post("/money-trans/payment/transfer-money")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Content-Type", "application/json")
                         .content("{\n\"payerAccountNumber\":\"111111\",\n\"receiverAccountNumber\":\"222222\",\n\"amount\":1000.0}"))
@@ -126,7 +98,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void getPayments_userIsNotAuthenticated_returnError() throws Exception {
-        mvc.perform(get("/money-trans/transfer-money"))
+        mvc.perform(get("/money-trans/payment/get-payments/user"))
                 .andExpect(redirectedUrl("http://localhost/money-trans/login"));
     }
 
@@ -146,36 +118,4 @@ public class ApplicationControllerTest {
                 .andExpect(redirectedUrl("/money-trans/login?error"));
     }
 
-/*    @Test
-    @WithMockUser(username = "username")
-    public void getPayments_userIsAuthenticated_returnPayments() throws Exception {
-        mvc.perform(MockMvcRequestBuilders
-                        .get("/money-trans")
-                        .principal(createPrincipal()))
-                .andDo(print());
-    }*/
-
-    private Principal createPrincipal() {
-        return new Principal() {
-            @Override
-            public String getName() {
-                return "username";
-            }
-
-            public String getPassword() {
-                return "password";
-            }
-
-            public Set<Role> getRoles() {
-                Role role = new Role();
-                role.setRoleSignature("USER_ROLE");
-                role.setRoleName("Пользователь");
-                return Set.of(role);
-            }
-
-            public Long getId() {
-                return 6L;
-            }
-        };
-    }
 }

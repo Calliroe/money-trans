@@ -6,17 +6,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.PostgreSQLContainer;
 import ru.jtc.moneytrans.model.*;
 import ru.jtc.moneytrans.repository.AccountRepository;
+import ru.jtc.moneytrans.repository.AccountTypeRepository;
 import ru.jtc.moneytrans.repository.PaymentRepository;
 import ru.jtc.moneytrans.rest.dto.FilteringDto;
-import ru.jtc.moneytrans.rest.dto.PaymentDto;
+import ru.jtc.moneytrans.rest.dto.PaymentInfo;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,27 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {PaymentServiceTest.Initializer.class})
-public class PaymentServiceTest {
-
-    private static PostgreSQLContainer sqlContainer;
-
-    static {
-        sqlContainer = new PostgreSQLContainer("postgres:10.7")
-                .withDatabaseName("integration-tests-db")
-                .withUsername("username")
-                .withPassword("password");
-        sqlContainer.start();
-    }
-
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + sqlContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + sqlContainer.getUsername(),
-                    "spring.datasource.password=" + sqlContainer.getPassword()
-            ).applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
+public class PaymentServiceTest extends AbstractServiceTest {
 
     @Autowired
     PaymentService paymentService;
@@ -55,6 +32,8 @@ public class PaymentServiceTest {
     PaymentRepository paymentRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    AccountTypeRepository accountTypeRepository;
 
     @Before
     public void before() {
@@ -78,7 +57,7 @@ public class PaymentServiceTest {
     @Test
     public void getAllByAccountId_accountIdIsExistAndFilterByReceiverAccount_shouldReturnAllFiltered() {
         FilteringDto dto = new FilteringDto();
-        Account account = accountRepository.findByAccountNumber("accountNumber1");
+        Account account = accountRepository.findByAccountNumberAndBic("accountNumber1", 1L);
         dto.setPayerAccountId(account.getId());
 
         List<Payment> payments = paymentService.getAllByAccountId(account.getId(), dto);
@@ -88,7 +67,7 @@ public class PaymentServiceTest {
 
     @Test
     public void getAllByAccountId_accountIdIsExistAndWithoutFiltering_shouldReturnAllByAccountId() {
-        Account account = accountRepository.findByAccountNumber("accountNumber1");
+        Account account = accountRepository.findByAccountNumberAndBic("accountNumber1", 1L);
         List<Payment> payments = paymentService.getAllByAccountId(account.getId(), null);
 
         assertThat(payments.size()).isEqualTo(3);
@@ -119,7 +98,7 @@ public class PaymentServiceTest {
     @Test
     public void gelAll_filterByPayerAccount_shouldReturnAllFiltered() {
         FilteringDto dto = new FilteringDto();
-        Account account = accountRepository.findByAccountNumber("accountNumber1");
+        Account account = accountRepository.findByAccountNumberAndBic("accountNumber1", 1L);
         dto.setPayerAccountId(account.getId());
 
         List<Payment> payments = paymentService.getAll(dto);
@@ -138,15 +117,15 @@ public class PaymentServiceTest {
     public void transferMoney_validData_shouldTransferMoney() {
         createAccount("accountNumber5");
         createAccount("accountNumber6");
-        PaymentDto dto = new PaymentDto();
+        PaymentInfo dto = new PaymentInfo();
         dto.setPayerAccountNumber("accountNumber5");
         dto.setReceiverAccountNumber("accountNumber6");
         dto.setAmount(new BigDecimal("150.0"));
 
         paymentService.transferMoney(dto);
 
-        assertThat(accountRepository.findByAccountNumber("accountNumber5").getBalance()).isEqualTo(new BigDecimal("850.0"));
-        assertThat(accountRepository.findByAccountNumber("accountNumber6").getBalance()).isEqualTo(new BigDecimal("1150.0"));
+        assertThat(accountRepository.findByAccountNumberAndBic("accountNumber5", 1L).getBalance()).isEqualTo(new BigDecimal("850.0"));
+        assertThat(accountRepository.findByAccountNumberAndBic("accountNumber6", 1L).getBalance()).isEqualTo(new BigDecimal("1150.0"));
         assertThat(paymentService.getAll(null).size()).isEqualTo(5);
     }
 
@@ -162,9 +141,7 @@ public class PaymentServiceTest {
     }
 
     public Account createAccount(String accountNumber) {
-        AccountType accountType = new AccountType();
-        accountType.setId(1L);
-        accountType.setType("Рассчетный счет");
+        AccountType accountType = accountTypeRepository.findByType("Рассчетный счет");
         Account account = new Account();
         account.setAccountType(accountType);
         account.setBic(123L);
