@@ -55,9 +55,7 @@ public class PaymentServiceTest extends AbstractServiceTest {
         FilteringDto dto = new FilteringDto();
         dto.setPayerAccountId(userAccount.getId());
 
-
         List<Payment> payments = paymentService.getAllByAccountId(userAccount.getId(), dto);
-        System.out.println(payment1.getCreateDate());
 
         assertThat(payments).isEqualTo(List.of(payment1, payment2));
     }
