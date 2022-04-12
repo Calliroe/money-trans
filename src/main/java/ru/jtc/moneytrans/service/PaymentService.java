@@ -1,5 +1,6 @@
 package ru.jtc.moneytrans.service;
 
+import ru.jtc.moneytrans.date.DateProviderImpl;
 import ru.jtc.moneytrans.rest.dto.FilteringDto;
 import ru.jtc.moneytrans.rest.dto.PaymentInfo;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
+    private final DateProviderImpl dateProvider;
 
     @Transactional
     public void transferMoney(PaymentInfo dto) {
@@ -49,7 +51,7 @@ public class PaymentService {
         payment.setPayerAccount(payerAccount);
         payment.setReceiverAccount(receiverAccount);
         payment.setAmount(amount);
-        Date date = new Date(); // Переделать
+        Date date = dateProvider.currentDate();
         payment.setCreateDate(date);
         payment.setModifyDate(date);
         payment.setComment(comment);

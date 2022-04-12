@@ -32,8 +32,10 @@ public class Payment {
     @Column(name = "comment")
     private String comment;
     @Column(name = "create_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
     @Column(name = "modify_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modifyDate;
 
 }

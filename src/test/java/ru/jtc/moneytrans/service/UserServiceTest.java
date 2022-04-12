@@ -1,6 +1,5 @@
 package ru.jtc.moneytrans.service;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.RoleRepository;
 import ru.jtc.moneytrans.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {UserServiceTest.Initializer.class})
+@Transactional
 public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
@@ -33,11 +34,6 @@ public class UserServiceTest extends AbstractServiceTest {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Before
-    public void before() {
-        userRepository.deleteAll();
-    }
-
     @Test
     public void findByUsername_userIsExist_shouldReturnUser() {
         User user = createUser();
@@ -45,8 +41,7 @@ public class UserServiceTest extends AbstractServiceTest {
 
         User result = userService.findByUsername(user.getUsername());
 
-        assertThat(result.getUsername()).isEqualTo(user.getUsername());
-        assertThat(result.getPassword()).isEqualTo(user.getPassword());
+        assertThat(result).isEqualTo(user);
     }
 
     @Test
@@ -63,6 +58,7 @@ public class UserServiceTest extends AbstractServiceTest {
         User result = userRepository.findByUsername("keke");
         assertThat(result.getUsername()).isEqualTo("keke");
         assertThat(bCryptPasswordEncoder.matches("kekeIsYou", result.getPassword())).isTrue();
+        assertThat(result.getRoles()).isEqualTo(Set.of(getUserRole()));
     }
 
     @Test
@@ -73,7 +69,8 @@ public class UserServiceTest extends AbstractServiceTest {
         UserDetails userDetails = userService.loadUserByUsername("keke");
 
         assertThat(userDetails.getUsername()).isEqualTo("keke");
-        assertThat(bCryptPasswordEncoder.matches("kekeIsYou", userDetails.getPassword())).isTrue();
+        assertThat(userDetails.getPassword()).isEqualTo("kekeIsYou");
+        assertThat(userDetails.getAuthorities()).isEqualTo(Set.of(getUserRole()));
     }
 
     @Test(expected = UsernameNotFoundException.class)
@@ -85,12 +82,12 @@ public class UserServiceTest extends AbstractServiceTest {
         User user = new User();
         user.setUsername("keke");
         user.setPassword("kekeIsYou");
-        Role role = new Role();
-        role.setId(1L);
-        role.setRoleSignature("ROLE_USER");
-        role.setRoleName("Пользователь");
-        user.setRoles(Set.of(role));
+        user.setRoles(Set.of(getUserRole()));
         return user;
+    }
+
+    public Role getUserRole() {
+        return roleRepository.findByRoleSignature("ROLE_USER");
     }
 
 }

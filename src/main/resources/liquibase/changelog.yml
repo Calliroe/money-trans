@@ -104,12 +104,12 @@ databaseChangeLog:
                   type: varchar(512)
               - column:
                   name: create_date
-                  type: date
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
                   name: modify_date
-                  type: date
+                  type: timestamp
                   constraints:
                     nullable: false
   - changeSet:

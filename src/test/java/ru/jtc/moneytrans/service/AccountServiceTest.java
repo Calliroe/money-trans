@@ -43,7 +43,6 @@ public class AccountServiceTest extends AbstractServiceTest {
 
         accountService.saveAccount(account);
 
-        assertThat(accountRepository.findAll().size()).isEqualTo(1);
         assertThat(accountRepository.findAll()).containsOnly(account);
     }
 
@@ -56,7 +55,6 @@ public class AccountServiceTest extends AbstractServiceTest {
 
         Set<Account> accountSet = accountService.findAllByUserId(1L);
 
-        assertThat(accountSet.size()).isEqualTo(2);
         assertThat(accountSet).containsOnly(account1, account2);
     }
 
@@ -84,7 +82,6 @@ public class AccountServiceTest extends AbstractServiceTest {
         Account expect = createAccount(user.getId(), accountInfo.getAccountNumber());
         expect.setVersion(0L);
         expect.setId(result.getId());
-        assertThat(accountRepository.findAll().size()).isEqualTo(1);
         assertThat(result).isEqualTo(expect);
     }
 
