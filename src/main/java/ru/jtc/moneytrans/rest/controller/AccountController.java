@@ -28,4 +28,5 @@ public class AccountController {
         accountService.createAccount(accountInfo, user);
         return ResponseEntity.ok("Аккаунт успешно сохранён");
     }
+
 }

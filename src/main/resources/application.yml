@@ -16,3 +16,23 @@ jpa:
 logging:
   level:
     root: ERROR
+---
+spring:
+  profiles: test
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/payment_db_S
+    username: postgres
+    password: password
+  liquibase:
+    change-log: classpath:liquibase/changelog.yml
+jpa:
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      show_sql: true
+  temp:
+    use_jdbc_metadata_defaults: false
+logging:
+  level:
+    root: ERROR

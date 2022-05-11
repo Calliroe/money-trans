@@ -1,0 +1,333 @@
+databaseChangeLog:
+  - logicalFilePath: liquibase/changelog.yml
+  - changeSet:
+      id: 1
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_user
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(70)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_account
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bic
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_type
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: numeric
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_payment
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: payer_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: receiver_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: varchar(512)
+              - column:
+                  name: create_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modify_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_role
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_signature
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_account_type
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+  - changeSet:
+      id: 6
+      author: Kristina_Menshikova
+      changes:
+        - createTable:
+            tableName: mt_user_role
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 7
+      author: Kristina_Menshikova
+      comment: "Create roles"
+      changes:
+        - insert:
+            tableName: mt_role
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: role_signature
+                  value: "ROLE_ADMIN"
+              - column:
+                  name: role_name
+                  value: "Администратор"
+        - insert:
+            tableName: mt_role
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: role_signature
+                  value: "ROLE_USER"
+              - column:
+                  name: role_name
+                  value: "Пользователь"
+  - changeSet:
+      id: 8
+      author: Kristina_Menshikova
+      comment: "Create account types"
+      changes:
+        - insert:
+            tableName: mt_account_type
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: type
+                  value: "Рассчетный счет"
+        - insert:
+            tableName: mt_account_type
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: type
+                  value: "Транзитный счет"
+        - insert:
+            tableName: mt_account_type
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: type
+                  value: "Общий счет"
+  - changeSet:
+      id: 9
+      author: Kristina_Menshikova
+      comment: "Create admin"
+      changes:
+        - insert:
+            tableName: mt_user
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: username
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "$2a$12$epKCbl.xjELYCzXbqhQvd.RfWt00m7RyDhxCX2c1cGHRsTs8Zl29q"
+  - changeSet:
+      id: 10
+      author: Kristina_Menshikova
+      comment: "Save user_role for admin"
+      changes:
+        - insert:
+            tableName: mt_user_role
+            columns:
+              - column:
+                  name: version
+                  value: 0
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 1
+  - changeSet:
+      id: 11
+      author: Kristina_Menshikova
+      comment: "Create user_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 2
+            sequenceName: user_sequence
+            startValue: 2
+  - changeSet:
+      id: 12
+      author: Kristina_Menshikova
+      comment: "Create account_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 1
+            sequenceName: account_sequence
+            startValue: 1
+  - changeSet:
+      id: 13
+      author: Kristina_Menshikova
+      comment: "Create payment_sequence"
+      changes:
+        - createSequence:
+            cycle: true
+            cache: 50
+            incrementBy: 1
+            minValue: 1
+            sequenceName: payment_sequence
+            startValue: 1

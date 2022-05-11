@@ -1,29 +1,23 @@
 package ru.jtc.moneytrans.service;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.jtc.moneytrans.model.Role;
 import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.RoleRepository;
 import ru.jtc.moneytrans.repository.UserRepository;
+import ru.jtc.moneytrans.AbstractIntegrationTest;
 
 import javax.transaction.Transactional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = {UserServiceTest.Initializer.class})
 @Transactional
-public class UserServiceTest extends AbstractServiceTest {
+public class UserServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     UserService userService;

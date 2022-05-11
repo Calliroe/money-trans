@@ -20,4 +20,5 @@ public class RegistrationValidator {
             throw new RegistrationException("Пользователь с таким именем уже существует");
         }
     }
+
 }

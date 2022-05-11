@@ -2,16 +2,13 @@ package ru.jtc.moneytrans.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.AccountType;
 import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.repository.AccountTypeRepository;
+import ru.jtc.moneytrans.AbstractIntegrationTest;
 import ru.jtc.moneytrans.rest.dto.AccountInfo;
 
 import java.math.BigDecimal;
@@ -20,10 +17,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = {AccountServiceTest.Initializer.class})
-public class AccountServiceTest extends AbstractServiceTest {
+public class AccountServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     AccountService accountService;

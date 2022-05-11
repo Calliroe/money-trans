@@ -1,7 +1,7 @@
 package ru.jtc.moneytrans.service;
 
 import ru.jtc.moneytrans.date.DateProviderImpl;
-import ru.jtc.moneytrans.rest.dto.FilteringDto;
+import ru.jtc.moneytrans.rest.dto.PaymentFilter;
 import ru.jtc.moneytrans.rest.dto.PaymentInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
     private final DateProviderImpl dateProvider;
+    private final PaymentSpecification specification;
 
     @Transactional
     public void transferMoney(PaymentInfo dto) {
@@ -36,14 +37,14 @@ public class PaymentService {
         createPayment(payerAccount, receiverAccount, amount, dto.getComment());
     }
 
-    public List<Payment> getAllByAccountId(long accountId, FilteringDto dto) {
-        return paymentRepository.findAll((PaymentSpecification.incomingPayments(accountId)
-                .or(PaymentSpecification.outgoingPayments(accountId)))
-                .and(PaymentSpecification.makeSpecification(dto)));
+    public List<Payment> getAllByAccountId(long accountId, PaymentFilter filter) {
+        return paymentRepository.findAll(PaymentSpecification.incomingPayments(accountId)
+                .or(PaymentSpecification.outgoingPayments(accountId))
+                .and(specification.makeSpecification(filter)));
     }
 
-    public List<Payment> getAll(FilteringDto dto) {
-        return paymentRepository.findAll(PaymentSpecification.makeSpecification(dto));
+    public List<Payment> getAll(PaymentFilter filter) {
+        return paymentRepository.findAll(specification.makeSpecification(filter));
     }
 
     private void createPayment(Account payerAccount, Account receiverAccount, BigDecimal amount, String comment) {

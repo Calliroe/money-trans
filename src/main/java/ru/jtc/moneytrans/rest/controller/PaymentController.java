@@ -8,7 +8,7 @@ import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.Payment;
 import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.rest.transformer.PaymentTransformer;
-import ru.jtc.moneytrans.rest.dto.FilteringDto;
+import ru.jtc.moneytrans.rest.dto.PaymentFilter;
 import ru.jtc.moneytrans.rest.dto.PaymentInfo;
 import ru.jtc.moneytrans.rest.validation.validator.PaymentValidator;
 import ru.jtc.moneytrans.service.AccountService;
@@ -17,6 +17,7 @@ import ru.jtc.moneytrans.service.PaymentService;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -36,18 +37,19 @@ public class PaymentController {
     }
 
     @GetMapping("/get-payments/user")
-    public List<PaymentInfo> getPaymentsForUser(@RequestBody(required = false) FilteringDto filteringDto, @AuthenticationPrincipal User user) {
+    public List<PaymentInfo> getPaymentsForUser(PaymentFilter paymentFilter, @AuthenticationPrincipal User user) {
         user.setAccounts(accountService.findAllByUserId(user.getId()));
         List<Payment> payments = new ArrayList<>();
         for (Account account : user.getAccounts()) {
-            payments.addAll(paymentService.getAllByAccountId(account.getId(), filteringDto));
+            payments.addAll(paymentService.getAllByAccountId(account.getId(), paymentFilter));
         }
-        return paymentTransformer.apply(payments);
+        return paymentTransformer.apply(payments.stream().distinct().collect(Collectors.toList()));
     }
 
     @GetMapping("/get-payments/admin")
-    public List<PaymentInfo> getPaymentsForAdmin(@RequestBody(required = false) FilteringDto filteringDto) {
-        List<Payment> payments = paymentService.getAll(filteringDto);
-        return paymentTransformer.apply(payments);
+    public ResponseEntity<List<PaymentInfo>> getPaymentsForAdmin(PaymentFilter paymentFilter) {
+        List<Payment> payments = paymentService.getAll(paymentFilter);
+        return ResponseEntity.ok(paymentTransformer.apply(payments));
     }
+
 }

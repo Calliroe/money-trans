@@ -2,17 +2,14 @@ package ru.jtc.moneytrans.service;
 
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.jtc.moneytrans.date.DateProviderImpl;
 import ru.jtc.moneytrans.model.*;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.repository.AccountTypeRepository;
 import ru.jtc.moneytrans.repository.PaymentRepository;
-import ru.jtc.moneytrans.rest.dto.FilteringDto;
+import ru.jtc.moneytrans.AbstractIntegrationTest;
+import ru.jtc.moneytrans.rest.dto.PaymentFilter;
 import ru.jtc.moneytrans.rest.dto.PaymentInfo;
 
 import java.math.BigDecimal;
@@ -21,10 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = {PaymentServiceTest.Initializer.class})
-public class PaymentServiceTest extends AbstractServiceTest {
+public class PaymentServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     PaymentService paymentService;
@@ -44,16 +38,17 @@ public class PaymentServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getAllByAccountId_accountIdIsExistAndFilterByReceiverAccount_shouldReturnAllFiltered() {
+    public void getAllByAccountId_accountIdIsExistAndFilterByPayerAccount_shouldReturnAllFiltered() {
         Account account1 = createAccount("accountNumber1");
         Account account2 = createAccount("accountNumber2");
         Account account3 = createAccount("accountNumber3");
         Payment payment1 = createPayment(account1, account2);
         Payment payment2 = createPayment(account1, account3);
-        Payment payment3 = createPayment(account2, account3);
+        Payment payment3 = createPayment(account2, account1);
         Account userAccount = accountRepository.findByAccountNumberAndBic("accountNumber1", 123L);
-        FilteringDto dto = new FilteringDto();
-        dto.setPayerAccountId(userAccount.getId());
+        PaymentFilter dto = new PaymentFilter();
+        dto.setPayerAccountNumber("accountNumber1");
+        dto.setPayerBic(123L);
 
         List<Payment> payments = paymentService.getAllByAccountId(userAccount.getId(), dto);
 
@@ -80,8 +75,9 @@ public class PaymentServiceTest extends AbstractServiceTest {
         Account account1 = createAccount("accountNumber1");
         Account account2 = createAccount("accountNumber2");
         Payment payment1 = createPayment(account1, account2);
-        FilteringDto dto = new FilteringDto();
-        dto.setReceiverAccountId(2L);
+        PaymentFilter dto = new PaymentFilter();
+        dto.setPayerAccountNumber("accountNumber1");
+        dto.setPayerBic(123L);
 
         List<Payment> payments = paymentService.getAllByAccountId(100L, null);
         List<Payment> payments2 = paymentService.getAllByAccountId(100L, dto);
@@ -95,8 +91,9 @@ public class PaymentServiceTest extends AbstractServiceTest {
         Account account1 = createAccount("accountNumber1");
         Account account2 = createAccount("accountNumber2");
         Payment payment1 = createPayment(account1, account2);
-        FilteringDto dto = new FilteringDto();
-        dto.setPayerAccountId(100L);
+        PaymentFilter dto = new PaymentFilter();
+        dto.setPayerAccountNumber("accountNumber");
+        dto.setPayerBic(12345L);
 
         List<Payment> payments = paymentService.getAll(dto);
 
@@ -110,8 +107,9 @@ public class PaymentServiceTest extends AbstractServiceTest {
         Payment payment1 = createPayment(account1, account2);
         Payment payment2 = createPayment(account2, account1);
         Account userAccount = accountRepository.findByAccountNumberAndBic("accountNumber1", 123L);
-        FilteringDto dto = new FilteringDto();
-        dto.setPayerAccountId(userAccount.getId());
+        PaymentFilter dto = new PaymentFilter();
+        dto.setPayerAccountNumber("accountNumber1");
+        dto.setPayerBic(123L);
 
         List<Payment> payments = paymentService.getAll(dto);
 

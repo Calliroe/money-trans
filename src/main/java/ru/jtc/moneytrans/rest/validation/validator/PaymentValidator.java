@@ -37,7 +37,6 @@ public class PaymentValidator {
         if (payerBalance.compareTo(amount) < 0) {
             throw new PaymentException("Недостаточно средств на счёте");
         }
-
     }
 
 }
