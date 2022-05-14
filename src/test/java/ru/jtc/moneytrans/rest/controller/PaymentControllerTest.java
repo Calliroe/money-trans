@@ -164,9 +164,9 @@ public class PaymentControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void getPaymentsForUser_withFilteringByDate_shouldReturnFilteredUserPayments() {
-        User user1 = createUser("kokoya", "isYou");
-        User user2 = createUser("jojoya", "isDefeat");
-        User user3 = createUser("mojoya", "isWin");
+        User user1 = createUser("star", "isYou");
+        User user2 = createUser("wall", "isDefeat");
+        User user3 = createUser("lake", "isWin");
         accountService.createAccount(createAccountInfo(34L), user1);
         accountService.createAccount(createAccountInfo(35L), user2);
         accountService.createAccount(createAccountInfo(36L), user3);
@@ -175,7 +175,7 @@ public class PaymentControllerTest extends AbstractIntegrationTest {
         paymentService.transferMoney(createPaymentInfo(35L, 36L));
         paymentService.transferMoney(createPaymentInfo(36L, 35L));
         paymentService.transferMoney(createPaymentInfo(35L, 34L));
-        String cookie = getCookieForUser("/money-trans/login?username=kokoya&password=isYou");
+        String cookie = getCookieForUser("/money-trans/login?username=star&password=isYou");
         HttpHeaders header = new HttpHeaders();
         header.add("Cookie", cookie);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -197,9 +197,9 @@ public class PaymentControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void getPaymentsForAdmin_withoutFiltering_shouldReturnAllPayments() {
-        User user1 = createUser("babe", "isYou");
-        User user2 = createUser("skate", "isDefeat");
-        User user3 = createUser("floor", "isWin");
+        User user1 = createUser("floor", "isYou");
+        User user2 = createUser("dust", "isDefeat");
+        User user3 = createUser("skate", "isWin");
         accountService.createAccount(createAccountInfo(99L), user1);
         accountService.createAccount(createAccountInfo(98L), user2);
         accountService.createAccount(createAccountInfo(97L), user3);
@@ -231,9 +231,9 @@ public class PaymentControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void getPaymentsForAdmin_withFiltering_shouldReturnAllFilteredPayments() {
-        User user1 = createUser("kokos", "isYou");
-        User user2 = createUser("jojos", "isDefeat");
-        User user3 = createUser("mojos", "isWin");
+        User user1 = createUser("joey", "isYou");
+        User user2 = createUser("monica", "isDefeat");
+        User user3 = createUser("chandler", "isWin");
         accountService.createAccount(createAccountInfo(66L), user1);
         accountService.createAccount(createAccountInfo(67L), user2);
         accountService.createAccount(createAccountInfo(68L), user3);
