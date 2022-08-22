@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Table(name = "mt_role")
 public class Role implements GrantedAuthority {
 
-    @Version
-    @Column(name = "version")
-    private Long version;
     @Id
     @Column(name = "id")
     private Long id;
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Column(name = "role_signature")
     private String roleSignature;
     @Column(name = "role_name")

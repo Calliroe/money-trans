@@ -10,14 +10,14 @@ import java.math.BigDecimal;
 @Table(name = "mt_account")
 public class Account {
 
-    @Version
-    @Column(name = "version")
-    private Long version;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
     @SequenceGenerator(name = "account_seq", sequenceName = "account_sequence", allocationSize = 1)
     private Long id;
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Column(name = "user_id")
     private Long userId;
     @Column(name = "account_number")

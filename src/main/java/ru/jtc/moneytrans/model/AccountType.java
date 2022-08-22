@@ -9,12 +9,12 @@ import javax.persistence.*;
 @Table(name = "mt_account_type")
 public class AccountType {
 
-    @Version
-    @Column(name = "version")
-    private Long version;
     @Id
     @Column(name = "id")
     private Long id;
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Column(name = "type")
     private String type;
 

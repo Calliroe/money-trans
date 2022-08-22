@@ -13,14 +13,14 @@ import java.util.Set;
 @Table(name = "mt_user")
 public class User implements UserDetails {
 
-    @Version
-    @Column(name = "version")
-    private Long version;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
+    @Version
+    @Column(name = "version")
+    private Long version;
     @Column(name = "username")
     private String username;
     @Column(name = "password")

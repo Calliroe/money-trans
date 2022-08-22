@@ -15,8 +15,8 @@ import org.testcontainers.utility.MountableFile;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MoneyTransApplication.class)
 @ContextConfiguration(initializers = AbstractIntegrationTest.Initializer.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MoneyTransApplication.class)
 public abstract class AbstractIntegrationTest {
     @Autowired
     protected TestRestTemplate restTemplate;
