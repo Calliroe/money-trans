@@ -1,28 +1,28 @@
 package ru.jtc.moneytrans.service;
 
+import lombok.RequiredArgsConstructor;
 import ru.jtc.moneytrans.date.DateProviderImpl;
 import ru.jtc.moneytrans.rest.dto.PaymentFilter;
 import ru.jtc.moneytrans.rest.dto.PaymentInfo;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.Payment;
 import ru.jtc.moneytrans.repository.AccountRepository;
 import ru.jtc.moneytrans.repository.PaymentRepository;
-import ru.jtc.moneytrans.service.specification.PaymentSpecification;
+import ru.jtc.moneytrans.service.specification.PaymentSpecificationCreator;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
     private final DateProviderImpl dateProvider;
-    private final PaymentSpecification specification;
+    private final PaymentSpecificationCreator specification;
 
     @Transactional
     public void transferMoney(PaymentInfo dto) {
@@ -38,13 +38,13 @@ public class PaymentService {
     }
 
     public List<Payment> getAllByAccountId(long accountId, PaymentFilter filter) {
-        return paymentRepository.findAll(PaymentSpecification.incomingPayments(accountId)
-                .or(PaymentSpecification.outgoingPayments(accountId))
-                .and(specification.makeSpecification(filter)));
+        return paymentRepository.findAll(PaymentSpecificationCreator.incomingPayments(accountId)
+                .or(PaymentSpecificationCreator.outgoingPayments(accountId))
+                .and(specification.create(filter)));
     }
 
     public List<Payment> getAll(PaymentFilter filter) {
-        return paymentRepository.findAll(specification.makeSpecification(filter));
+        return paymentRepository.findAll(specification.create(filter));
     }
 
     private void createPayment(Account payerAccount, Account receiverAccount, BigDecimal amount, String comment) {

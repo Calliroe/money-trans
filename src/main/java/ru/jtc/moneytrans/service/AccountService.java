@@ -1,6 +1,6 @@
 package ru.jtc.moneytrans.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.jtc.moneytrans.model.Account;
 import ru.jtc.moneytrans.model.AccountType;
@@ -12,7 +12,7 @@ import ru.jtc.moneytrans.rest.dto.AccountInfo;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountService {
 
     private final AccountRepository accountRepository;

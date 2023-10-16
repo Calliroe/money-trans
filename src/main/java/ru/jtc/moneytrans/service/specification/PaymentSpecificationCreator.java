@@ -17,11 +17,11 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentSpecification {
+public class PaymentSpecificationCreator {
 
     private final AccountRepository accountRepository;
 
-    public Specification<Payment> makeSpecification(PaymentFilter filter) {
+    public Specification<Payment> create(PaymentFilter filter) {
         Specification<Payment> specification = (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         if (Objects.isNull(filter)) {
             return specification;

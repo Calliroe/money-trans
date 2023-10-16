@@ -1,6 +1,6 @@
 package ru.jtc.moneytrans.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,19 +12,17 @@ import ru.jtc.moneytrans.model.User;
 import ru.jtc.moneytrans.repository.RoleRepository;
 import ru.jtc.moneytrans.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Transactional
     public void createUser(String username, String password) {
         User user = new User();
         user.setUsername(username);
@@ -39,7 +37,6 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsernameWithRoles(username);
         if (Objects.isNull(user)) {

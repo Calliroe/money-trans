@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "mt_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(targetEntity = Account.class, mappedBy = "userId", cascade = CascadeType.ALL)
